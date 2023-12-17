@@ -43,8 +43,8 @@ def run(stackargs):
                              default="elasticdev/ansible-run-env")
 
     # Add execgroup
-    stack.add_execgroup("config0-hub:::jenkins::on_docker")
-    stack.add_substack('config0-hub:::config0-core::publish_host_file')
+    stack.add_execgroup("config0-publish:::jenkins::on_docker")
+    stack.add_substack('config0-publish:::config0_core::publish_host_file')
 
     # Initialize
     stack.init_variables()
