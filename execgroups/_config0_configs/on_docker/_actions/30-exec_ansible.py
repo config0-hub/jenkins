@@ -1,7 +1,7 @@
 def default():
 
     task = {'method': 'shelloutconfig',
-            'metadata': {'env_vars': ['config0-hub:::ansible::create'],
-                         'shelloutconfigs': ['config0-hub:::ansible::resource_wrapper']}}
+            'metadata': {'env_vars': ['config0-publish:::ansible::create'],
+                         'shelloutconfigs': ['config0-publish:::ansible::resource_wrapper']}}
 
     return task
