@@ -1,14 +1,14 @@
-def _get_instance_info(stack, hostname):
+def _get_public_ip(stack):
 
     _lookup = {"must_exists": True,
                "must_be_one": True,
                "resource_type": "server",
-               "hostname": hostname}
+               "hostname": stack.hostname}
 
-    return list(stack.get_resource(**_lookup))[0]
+    return list(stack.get_resource(**_lookup))[0]["public_ip"]
 
 
-def _get_ssh_key(stack):
+def _get_private_key_hash(stack):
 
     _lookup = {"must_exists": True,
                "resource_type": "ssh_key_pair",
@@ -51,11 +51,8 @@ def run(stackargs):
     stack.init_execgroups()
     stack.init_substacks()
 
-    instance_info = _get_instance_info(stack, stack.hostname)
-    public_ip = instance_info["public_ip"]
-
-    # get ssh_key and convert to base64 string
-    _private_key = _get_ssh_key(stack)
+    public_ip = _get_public_ip(stack)
+    _private_key_hash = _get_private_key_hash(stack)
 
     # generate stateful id
     stateful_id = stack.random_id(size=10)
@@ -63,7 +60,7 @@ def run(stackargs):
     env_vars = {"STATEFUL_ID": stateful_id,
                 "DOCKER_EXEC_ENV": stack.ansible_docker_exec_env,
                 "ANSIBLE_DIR": "var/tmp/ansible",
-                "ANS_VAR_private_key": _private_key,
+                "ANS_VAR_private_key": _private_key_hash,  # expects base64 string
                 "ANS_VAR_hosts": stack.b64_encode(json.dumps({"all": [public_ip]})),
                 "ANS_VAR_exec_ymls": "install.yml",
                 "ANSIBLE_EXEC_YMLS": "install.yml"}
@@ -85,7 +82,7 @@ def run(stackargs):
                      "jenkins_user": "admin"}
 
     if stack.publish_private_key:
-        _publish_vars["private_key_b64"] = _private_key
+        _publish_vars["private_key_b64"] = _private_key_hash
 
     stack.publish(_publish_vars)
 
