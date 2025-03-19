@@ -1,0 +1,15 @@
+desc: Installs and configures Jenkins on a pre-existing server using Ansible in Docker
+release: 0.0.1
+author: Gary Leong <gary@config0.com>
+license: GPL-3.0
+categories: 
+   - ansible
+   - cloud
+tags:
+   - ansible
+   - featured
+   - feature
+   - jenkins
+   - vms
+   - cloud
+   - public_cloud
