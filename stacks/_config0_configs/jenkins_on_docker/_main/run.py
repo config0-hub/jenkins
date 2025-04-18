@@ -51,12 +51,9 @@ def run(stackargs):
 
     # Add default variables
     stack.parse.add_required(key="hostname")
-
     stack.parse.add_required(key="ssh_key_name")
-
     stack.parse.add_required(key="publish_private_key",
                              default="null")
-
     stack.parse.add_optional(key="ansible_docker_image",
                              default="config0/ansible-run-env")
 
@@ -75,29 +72,35 @@ def run(stackargs):
     # generate stateful id
     stateful_id = stack.random_id(size=10)
 
-    env_vars = {"STATEFUL_ID": stateful_id,
-                "DOCKER_IMAGE": stack.ansible_docker_image,
-                "ANSIBLE_DIR": "var/tmp/ansible",
-                "ANS_VAR_private_key": _private_key_hash,  # expects base64 string
-                "ANS_VAR_hosts": stack.b64_encode(json.dumps({"all": [public_ip]})),
-                "ANS_VAR_exec_ymls": "install.yml",
-                "ANSIBLE_EXEC_YMLS": "install.yml"}
+    env_vars = {
+        "STATEFUL_ID": stateful_id,
+        "DOCKER_IMAGE": stack.ansible_docker_image,
+        "ANSIBLE_DIR": "var/tmp/ansible",
+        "ANS_VAR_private_key": _private_key_hash,  # expects base64 string
+        "ANS_VAR_hosts": stack.b64_encode(json.dumps({"all": [public_ip]})),
+        "ANS_VAR_exec_ymls": "install.yml",
+        "ANSIBLE_EXEC_YMLS": "install.yml"
+    }
 
     human_description = "Install Jenkins for Ansible"
-    inputargs = {"display": True,
-                 "human_description": human_description,
-                 "env_vars": json.dumps(env_vars.copy()),
-                 "stateful_id": stateful_id,
-                 "automation_phase": "infrastructure",
-                 "hostname": stack.hostname}
+    inputargs = {
+        "display": True,
+        "human_description": human_description,
+        "env_vars": json.dumps(env_vars.copy()),
+        "stateful_id": stateful_id,
+        "automation_phase": "infrastructure",
+        "hostname": stack.hostname
+    }
 
     stack.on_docker.insert(**inputargs)
 
     # publish variables
-    _publish_vars = {"hostname": stack.hostname,
-                     "jenkins_ipaddress": public_ip,
-                     "jenkins_url": f"https://{public_ip}",
-                     "jenkins_user": "admin"}
+    _publish_vars = {
+        "hostname": stack.hostname,
+        "jenkins_ipaddress": public_ip,
+        "jenkins_url": f"https://{public_ip}",
+        "jenkins_user": "admin"
+    }
 
     if stack.publish_private_key:
         _publish_vars["private_key_b64"] = _private_key_hash
@@ -105,15 +108,19 @@ def run(stackargs):
     stack.publish(_publish_vars)
 
     # fetch and publish jenkins admin password
-    arguments = {"remote_file": "/var/lib/jenkins/secrets/initialAdminPassword",
-                 "key": "jenkins_password",
-                 "hostname": stack.hostname,
-                 "ssh_key_name": stack.ssh_key_name}
+    arguments = {
+        "remote_file": "/var/lib/jenkins/secrets/initialAdminPassword",
+        "key": "jenkins_password",
+        "hostname": stack.hostname,
+        "ssh_key_name": stack.ssh_key_name
+    }
 
     human_description = "Publish jenkins admin init password"
-    inputargs = {"arguments": arguments,
-                 "automation_phase": "infrastructure",
-                 "human_description": human_description}
+    inputargs = {
+        "arguments": arguments,
+        "automation_phase": "infrastructure",
+        "human_description": human_description
+    }
 
     stack.publish_host_file.insert(display=True, **inputargs)
 
