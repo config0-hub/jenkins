@@ -1,0 +1,5 @@
+asset_type: shelloutconfig
+env_vars:
+- config0-publish:::ansible::hosts
+shelloutconfigs:
+- config0-publish:::ansible::resource_wrapper
