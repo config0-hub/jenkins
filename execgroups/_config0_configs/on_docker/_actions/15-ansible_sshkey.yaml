@@ -1,5 +1,4 @@
-asset_type: shelloutconfig
 env_vars:
-- config0-publish:::ansible::ssh_key
-shelloutconfigs:
-- config0-publish:::ansible::resource_wrapper
+- config0-hub:::ansible::ssh_key.sh
+scripts:
+- config0-hub:::ansible::resource_wrapper.sh

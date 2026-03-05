@@ -20,13 +20,13 @@ This stack automates the installation of Jenkins on a pre-existing server using 
 ## Dependencies
 
 ### Substacks
-- [config0-publish:::config0_core::get_contents_host_file](http://config0.http.redirects.s3-website-us-east-1.amazonaws.com/assets/stacks/config0-publish/config0_core/get_contents_host_file/default)
+- [config0-hub:::config0_core::get_contents_host_file](http://config0.http.redirects.s3-website-us-east-1.amazonaws.com/assets/stacks/config0-hub/config0_core/get_contents_host_file/default)
 
 ### Execgroups
-- [config0-publish:::jenkins::on_docker](http://config0.http.redirects.s3-website-us-east-1.amazonaws.com/assets/exec/groups/config0-publish/jenkins/on_docker/default)
+- [config0-hub:::jenkins::on_docker](http://config0.http.redirects.s3-website-us-east-1.amazonaws.com/assets/exec/groups/config0-hub/jenkins/on_docker/default)
 
-### Shelloutconfigs
-- [config0-publish:::terraform::resource_wrapper](http://config0.http.redirects.s3-website-us-east-1.amazonaws.com/assets/shelloutconfigs/config0-publish/terraform/resource_wrapper/default)
+### Scripts
+- [config0-hub:::terraform::resource_wrapper](http://config0.http.redirects.s3-website-us-east-1.amazonaws.com/assets/scripts/config0-hub/terraform/resource_wrapper/default)
 
 ## License
 <pre>
