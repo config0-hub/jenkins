@@ -1,4 +1,4 @@
 env_vars:
-- config0-hub:::ansible::ssh_key.sh
+- config0-hub:::ansible::ssh_key
 scripts:
-- config0-hub:::ansible::resource_wrapper.sh
+- config0-hub:::ansible::resource_wrapper
