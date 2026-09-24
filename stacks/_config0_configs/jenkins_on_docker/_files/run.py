@@ -32,14 +32,12 @@ def _get_private_key_hash(stack):
                "name": stack.ssh_key_name}
 
     try:
-        private_key = stack.get_resource(decrypt=True,
-                                         **_lookup)[0]["private_key"]
+        private_key = stack.get_resource(**_lookup)[0]["private_key"]
     except:
         _lookup["resource_type"] = "ssh_public_key"
-        private_key = stack.get_resource(decrypt=True,
-                                         **_lookup)[0]["private_key"]
+        private_key = stack.get_resource(**_lookup)[0]["private_key"]
 
-    return stack.b64_encode(private_key)
+    return stack.serialize(private_key, json=False)
 
 
 def run(stackargs):
@@ -77,7 +75,7 @@ def run(stackargs):
         "DOCKER_IMAGE": stack.ansible_docker_image,
         "ANSIBLE_DIR": "var/tmp/ansible",
         "ANS_VAR_private_key": _private_key_hash,  # expects base64 string
-        "ANS_VAR_hosts": stack.b64_encode(json.dumps({"all": [public_ip]})),
+        "ANS_VAR_hosts": stack.serialize(json.dumps({"all": [public_ip]}), json=False),
         "ANS_VAR_exec_ymls": "install.yml",
         "ANSIBLE_EXEC_YMLS": "install.yml"
     }
