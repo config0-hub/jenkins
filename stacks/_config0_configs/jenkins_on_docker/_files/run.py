@@ -85,9 +85,7 @@ def run(stackargs):
         "display": True,
         "human_description": human_description,
         "env_vars": json.dumps(env_vars.copy()),
-        "stateful_id": stateful_id,
-        "automation_phase": "infrastructure",
-        "hostname": stack.hostname
+        "stateful_id": stateful_id
     }
 
     stack.on_docker.insert(**inputargs)
