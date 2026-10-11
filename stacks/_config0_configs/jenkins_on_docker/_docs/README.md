@@ -15,7 +15,6 @@ This stack automates the installation of Jenkins on a pre-existing server using 
 ### Optional
 | Name | Description | Default |
 |------|-------------|---------|
-| ansible_docker_image | Ansible container image | "config0/ansible-run-env" |
 
 ## Dependencies
 

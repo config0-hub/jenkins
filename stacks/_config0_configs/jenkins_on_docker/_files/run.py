@@ -52,8 +52,6 @@ def run(stackargs):
     stack.parse.add_required(key="ssh_key_name")
     stack.parse.add_required(key="publish_private_key",
                              default="null")
-    stack.parse.add_optional(key="ansible_docker_image",
-                             default="config0/ansible-run-env")
 
     # Add execgroup
     stack.add_execgroup("config0-hub:::jenkins::on_docker")
@@ -72,7 +70,6 @@ def run(stackargs):
 
     env_vars = {
         "STATEFUL_ID": stateful_id,
-        "DOCKER_IMAGE": stack.ansible_docker_image,
         "ANSIBLE_DIR": "var/tmp/ansible",
         "ANS_VAR_private_key": _private_key_hash,  # expects base64 string
         "ANS_VAR_hosts": stack.serialize(json.dumps({"all": [public_ip]}), json=False),
