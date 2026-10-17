@@ -27,15 +27,17 @@ def _get_public_ip(stack):
 
 def _get_private_key_hash(stack):
 
-    _lookup = {"must_exists": True,
-               "resource_type": "ssh_key_pair",
-               "name": stack.ssh_key_name}
+    # No ssh_key_pair row is the expected miss that falls through to the
+    # ssh_public_key row, which must exist.
+    rows = stack.get_resource(resource_type="ssh_key_pair",
+                              name=stack.ssh_key_name)
 
-    try:
-        private_key = stack.get_resource(**_lookup)[0]["private_key"]
-    except:
-        _lookup["resource_type"] = "ssh_public_key"
-        private_key = stack.get_resource(**_lookup)[0]["private_key"]
+    if not rows:
+        rows = stack.get_resource(must_exists=True,
+                                  resource_type="ssh_public_key",
+                                  name=stack.ssh_key_name)
+
+    private_key = rows[0]["private_key"]
 
     return stack.serialize(private_key, json=False)
 
